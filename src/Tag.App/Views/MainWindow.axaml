@@ -1,0 +1,57 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Tag.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="600"
+        x:Class="Tag.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        DragDrop.AllowDrop="True"
+        Width="900" Height="600"
+        Title="Tag — order text by tags">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <DockPanel Margin="12">
+
+        <!-- Top bar -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="12" Margin="0,0,0,8">
+            <Button Content="Open File…" Click="OnOpenClick"/>
+            <CheckBox Content="Remove tags" IsChecked="{Binding RemoveTags}" VerticalAlignment="Center"/>
+            <Button Content="Save Ordered File" Command="{Binding SaveCommand}"/>
+            <TextBlock Text="{Binding FilePath}" VerticalAlignment="Center"
+                       Opacity="0.7" TextTrimming="CharacterEllipsis"/>
+        </StackPanel>
+
+        <!-- Status bar -->
+        <Border DockPanel.Dock="Bottom" Margin="0,8,0,0" Padding="4,2">
+            <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- Warnings (advisory; shown only when present) -->
+        <Expander DockPanel.Dock="Top" Header="Warnings" IsExpanded="True"
+                  IsVisible="{Binding HasWarnings}" Margin="0,0,0,8">
+            <ItemsControl ItemsSource="{Binding Warnings}" x:CompileBindings="False">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Foreground="#B25900" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Expander>
+
+        <!-- Live preview -->
+        <Border BorderBrush="#888888" BorderThickness="1" CornerRadius="4">
+            <TextBox Text="{Binding Preview}" IsReadOnly="True" AcceptsReturn="True"
+                     TextWrapping="NoWrap"
+                     FontFamily="Cascadia Mono,Consolas,Menlo,monospace"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        </Border>
+
+    </DockPanel>
+
+</Window>
